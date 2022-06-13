@@ -4,8 +4,10 @@ local robot = require("robot")
 
 local server = stem.connect('stem.fomalhaut.me')
 
---Код Stem
-server:subscribe('test')
+print('Введите адресс Stem')
+local StemCode = io.read()
+
+server:subscribe(StemCode)
 
 while true do
   local name, channel_id, message = event.pull('stem_message')
