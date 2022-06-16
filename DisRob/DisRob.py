@@ -29,9 +29,6 @@ def send_package(_type, _id, _message=None):
   safe_send(len(pack) % 256)
   safe_send(pack)
 
-def subscribe(channel):
-  send_package(1, channel)
-
 def send(channel, msg):
   try:
     send_package(0, channel, msg)
