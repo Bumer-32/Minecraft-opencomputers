@@ -11,7 +11,6 @@ local modem = component.modem
 local resouces = filesystem.path(system.getCurrentScript())
 
 local prices = {}
-local selected
 ---------------------------------------------------------------------------------------------------
 --треба зробити робочу зону та вікно
 local workspace, window = system.addWindow(gui.titledWindow(1, 1, 80, 30, "Cass", true))
