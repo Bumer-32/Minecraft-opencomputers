@@ -11,44 +11,64 @@ local modem = component.modem
 local resouces = filesystem.path(system.getCurrentScript())
 
 local prices = {}
+
+local logoImage = image.load(resouces .. "Logo.pic")
 ---------------------------------------------------------------------------------------------------
 --треба зробити робочу зону та вікно
-local workspace, window = system.addWindow(gui.titledWindow(1, 1, 80, 30, "Cass", true))
---також зону вікна
-local layout = window:addChild(gui.layout(1, 2, window.width, window.height - 1, 1, 1))
-layout:setGridSize(2, 1)
-
---зміна розміру
-window.onResize = function(newWidth, newHeight)
-  
-  window.backgroundPanel.width, window.backgroundPanel.height = newWidth, newHeight
-  layout.width, layout.height = newWidth, newHeight
-  window.titlePanel.width = newWidth
-  window.titleLabel.width = newWidth
-end
-
+local workspace, window, _ = system.addWindow(gui.titledWindow(1, 1, 80, 30, "Cass", true))
+window.actionButtons.maximize:remove()
 
 --загрузка, поля для цін і кнопка відпраки туди же
-local progressIndicator = layout:setPosition(1, 1, layout:addChild(gui.progressIndicator(1, 1, 0xdbdbdb, 0x00b640, 0x99FF80)))
-local gas92 = layout:setPosition(1, 1, layout:addChild(gui.input(1, 1, 17, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "92-гий бензин"))) 
-local gas98 = layout:setPosition(1, 1, layout:addChild(gui.input(1, 1, 17, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "98-мий бензин")))
-local diesel = layout:setPosition(1, 1, layout:addChild(gui.input(1, 1, 17, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "Дизельне пальне")))
-local send = layout:setPosition(1, 1, layout:addChild(gui.button(1, 1, 17, 3, 0xdbdbdb, 0x000000, 0xAAAAAA, 0x0, "Відобразити")))
+local progressIndicator = window:addChild(gui.progressIndicator(16, window.height - 36, 0xdbdbdb, 0x00b640, 0x99FF80))
+local gas92 = window:addChild(gui.input(10, window.height - 33, 17, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "92-гий бензин", true))
+local gas98 = window:addChild(gui.input(10, window.height - 29, 17, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "98-мий бензин", true))
+local diesel = window:addChild(gui.input(10, window.height - 25, 17, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "Дизельне пальне", true))
+local send = window:addChild(gui.button(10, window.height - 21, 17, 3, 0xdbdbdb, 0x000000, 0xAAAAAA, 0x0, "Відобразити"))
 
-text92 = layout:setPosition(1, 1, layout:addChild(gui.text(1, 1, 0x000000, "92-гий = ")))
-text98 = layout:setPosition(1, 1, layout:addChild(gui.text(1, 1, 0x000000, "98-мий = ")))
-textDiesel = layout:setPosition(1, 1, layout:addChild(gui.text(1, 1, 0x000000, "Дизельне пальне = ")))
+text92 = window:addChild(gui.text(10, window.height - 17, 0x000000, "92-гий = "))
+text98 = window:addChild(gui.text(10, window.height - 16, 0x000000, "98-мий = "))
+textDiesel = window:addChild(gui.text(10, window.height - 15, 0x000000, "Дизельне пальне = "))
 
+local logo = window:addChild(gui.image(0, 0, logoImage))
   
-local comboBox = layout:setPosition(2, 1, layout:addChild(gui.comboBox(1, 1, 22, 3, 0xdbdbdb, 0x000000, 0xAAAAAA, 0xdbdbdb)))
+local comboBox = window:addChild(gui.comboBox(window.width - 32, window.height - 33, 22, 3, 0xdbdbdb, 0x000000, 0xAAAAAA, 0xdbdbdb))
 comboBox:addItem("92-гий бензин")
 comboBox:addItem("98-мий бензин")
 comboBox:addItem("Дизельне пальне")
-local litres = layout:setPosition(2, 1, layout:addChild(gui.input(1, 1, 18, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "Введіть літраж")))
-local PayField = layout:setPosition(2, 1, layout:addChild(gui.input(1, 1, 18, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "Скільки внесли?")))
+local litres = window:addChild(gui.input(window.width - 30, window.height - 29, 18, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "Введіть літраж", true))
+local PayField = window:addChild(gui.input(window.width - 30, window.height - 25, 18, 3, 0xdbdbdb, 0x353535, 0x999999, 0xAAAAAA, 0x2D2D2D, "", "Скільки внесли?", true))
+local pay = window:addChild(gui.button(window.width - 30, window.height - 21, 16, 3, 0xdbdbdb, 0x000000, 0xAAAAAA, 0x0, "Оплатити"))
+local rest = window:addChild(gui.text(window.width - 25, window.height - 17, 0x000000, "Решта = "))
 
-local pay = layout:setPosition(2, 1, layout:addChild(gui.button(1, 1, 16, 3, 0xdbdbdb, 0x000000, 0xAAAAAA, 0x0, "Оплатити")))
-local rest = layout:setPosition(2, 1, layout:addChild(gui.text(1, 1, 0x000000, "Решта = ")))
+local license = window:addChild(gui.text(window.width, window.height - 1, 0xdbdbdb, "License by MlatyMLA"))
+
+window:maximize()
+--зміна розміру
+window.onResize = function(newWidth, newHeight)
+  window.backgroundPanel.width, window.backgroundPanel.height = newWidth, newHeight
+  window.titlePanel.width = newWidth
+  window.titleLabel.width = newWidth
+
+  progressIndicator.localX, progressIndicator.localY = 16, newHeight - 36
+  gas92.localX, gas92.localY = 10, newHeight - 33
+  gas98.localX, gas98.localY = 10, newHeight - 29
+  diesel.localX, diesel.localY = 10, newHeight - 25
+  send.localX, send.localY = 10, newHeight - 21
+
+  text92.localX, text92.localY = 10, newHeight - 17
+  text98.localX, text98.localY = 10, newHeight - 16
+  textDiesel.localX, textDiesel.localY = 10, newHeight - 15
+
+  logo.localX, logo.localY = newWidth / 2 - (image.getWidth(logoImage) / 2), math.ceil(newHeight / 2 - (image.getHeight(logoImage)) / 2)
+
+  comboBox.localX, comboBox.localY = newWidth -32, newHeight - 33
+  litres.localX, litres.localY = newWidth - 30, newHeight - 29
+  PayField.localX, PayField.localY = newWidth - 30, newHeight - 25
+  pay.localX, pay.localY = newWidth - 30, newHeight - 21
+  rest.localX, rest.localY = newWidth - 25, newHeight - 17
+
+  license.localX, license.localY = newWidth - 19, newHeight
+end
 
 local function start()
   prices = filesystem.readTable(resouces .. "Config.cfg")
@@ -108,6 +128,27 @@ local function load()
   start()
 end
 
+gas92.validator = function(text)
+  return text:match("%d+")
+end
+
+gas98.validator = function(text)
+  return text:match("%d+")
+end
+
+diesel.validator = function(text)
+  return text:match("%d+")
+end
+
+litres.validator = function(text)
+  return text:match("%d+")
+end
+
+PayField.validator = function(text)
+  return text:match("%d+")
+end
+
+
 send.onTouch = function()
     --перевірка на текст
   if gas92.text == "" then
@@ -129,22 +170,31 @@ send.onTouch = function()
 end
 
 pay.onTouch = function()
+  if litres.text == "" then
+    gui.alert("Ви не ввели літраж!")
+    return
+  end
+  if PayField.te == "" then
+    gui.alert("Ви не ввели оплату!")
+    return
+  end
+
   for i = 1, 3 do
     rest.text = "Рахую"
     workspace:draw()
-    event.sleep(0.2)
+    event.sleep(0.1)
     
     rest.text = "Рахую ┃"
     workspace:draw()
-    event.sleep(0.2)
+    event.sleep(0.1)
     
     rest.text = "Рахую ┃┃"
     workspace:draw()
-    event.sleep(0.2)
+    event.sleep(0.1)
     
     rest.text = "Рахую ┃┃┃"
     workspace:draw()
-    event.sleep(0.2)
+    event.sleep(0.1)
   end
   local cost = 0
   if comboBox.selectedItem == 1 then
@@ -155,11 +205,11 @@ pay.onTouch = function()
     cost = prices[3]
   end
   
-  cost = litres.text * cost
+  local cost = litres.text * cost
   if tonumber(cost) > tonumber(PayField.text) then
     rest.text = "Недостача!"
     workspace:draw()
-    event.sleep(5)
+    event.sleep(2)
     rest.text = "Решта = "
   else
     rest.text = "Решта = " .. PayField.text - cost
@@ -169,6 +219,3 @@ end
 ---------------------------------------------------------------------------------------------------
 --старт
 start()
---промальовка
-workspace:draw()
-workspace:start()
