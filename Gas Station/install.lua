@@ -25,7 +25,6 @@ print("Succes!")
 print("Creating shortcut")
 system.createShortcut(
   "/MineOS/" .. system.getUser() .. "/Desktop/Cass",
-  "system.createShortcut(
   "/Applications/Cass.app/"
 )
 print("Succes!")
