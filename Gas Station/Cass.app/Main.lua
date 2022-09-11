@@ -2,14 +2,14 @@ local component = require("Component")
 local system = require("System")
 local filesystem = require("Filesystem")
 local event = require("Event")
+local internet = require("Internet")
 local gui = require("GUI")
 local image = require("Image")
 
 local modem = component.modem
 ---------------------------------------------------------------------------------------------------
-
 local resouces = filesystem.path(system.getCurrentScript())
-
+local version = 1.2
 local prices = {}
 
 local logoImage = image.load(resouces .. "Logo.pic")
@@ -40,7 +40,8 @@ local PayField = window:addChild(gui.input(window.width - 30, window.height - 25
 local pay = window:addChild(gui.button(window.width - 30, window.height - 21, 16, 3, 0xdbdbdb, 0x000000, 0xAAAAAA, 0x0, "Оплатити"))
 local rest = window:addChild(gui.text(window.width - 25, window.height - 17, 0x000000, "Решта = "))
 
-local license = window:addChild(gui.text(window.width, window.height - 1, 0xdbdbdb, "License by MlatyMLA"))
+local license = window:addChild(gui.text(window.width, window.height, 0x555555, "License by MlatyMLA"))
+local ver = window:addChild(gui.text(1, window.height - 1, 0x555555, version))
 
 window:maximize()
 --зміна розміру
@@ -68,6 +69,7 @@ window.onResize = function(newWidth, newHeight)
   rest.localX, rest.localY = newWidth - 25, newHeight - 17
 
   license.localX, license.localY = newWidth - 19, newHeight
+  ver.localX, ver.localY = 1, newHeight
 end
 
 local function start()
@@ -94,15 +96,36 @@ local function load()
   --треба вмикнути індикатор і відкрити порт для поточного трафіку перевірки
   progressIndicator.active = true
   modem.open(32)
+  modem.open(33)
   
     --перевірка палива
-  while true do
+  for i = 1, 10 do
+    if i == 10 then
+      gui.alert("Немає підключення")
+    end
     modem.broadcast(32, gas92.text, gas98.text, diesel.text)
     local name, _, _, _, _, sGas92, sGas98, sDiesel = event.pull()
     if name == "modem_message" then
       if sGas92 == gas92.text then
         if sGas98 == gas98.text then
           if sDiesel == diesel.text then
+            break
+          end
+        end
+      end
+    end
+  end
+
+  for i = 1, 10 do
+    if i == 10 then
+      gui.alert("Немає підключення")
+    end
+    modem.broadcast(33, gas92.text, gas98.text, diesel.text)
+    local name2, _, _, _, _, sGas922, sGas982, sDiesel2 = event.pull()
+    if name2 == "modem_message" then
+      if sGas922 == gas92.text then
+        if sGas982 == gas98.text then
+          if sDiesel2 == diesel.text then
             break
           end
         end
@@ -124,6 +147,7 @@ local function load()
   --та вимикай його
   progressIndicator.active = false
   modem.close(32) --і порт закрий
+  modem.close(33) --і порт закрий
   
   start()
 end
@@ -216,6 +240,8 @@ pay.onTouch = function()
   end
 end
 
+if filesystem.exists(resouces .. "/Version.cfg") then
+  internet.download("")
 ---------------------------------------------------------------------------------------------------
 --старт
 start()
