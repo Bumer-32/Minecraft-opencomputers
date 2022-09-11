@@ -254,11 +254,11 @@ if filesystem.exists(system.getTemporaryPath() .. "/Version.cfg") then
     internet.download(
     "https://raw.githubusercontent.com/Bumer-32/Minecraft-opencomputers/main/Gas%20Station/Cass.app/updater.lua",
     system.getTemporaryPath() .. "/CassUpdater.lua"
+    )
     system.execute(system.getTemporaryPath() .. "/CassUpdater.lua")
 
     window:remove()
     workspace:stop()
-  )
 else
   internet.download(
     "https://raw.githubusercontent.com/Bumer-32/Minecraft-opencomputers/main/Gas%20Station/Cass.app/Version.cfg",

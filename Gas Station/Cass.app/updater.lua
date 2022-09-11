@@ -30,4 +30,4 @@ print("Downloading Logo.pic")
 internet.download("https://raw.githubusercontent.com/Bumer-32/Minecraft-opencomputers/main/Gas%20Station/Cass.app/Logo.pic", "/Applications/Cass.app/Logo.pic")
 print("Succes!")
 
-system.execute("/Applications/Cass.app/Main.lua")
+system.execute("")
