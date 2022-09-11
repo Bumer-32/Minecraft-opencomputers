@@ -1,5 +1,4 @@
 local internet = require("Internet")
-local event = require("Event")
 local system = require("System")
 local fs = require("Filesystem")
 
