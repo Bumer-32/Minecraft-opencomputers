@@ -10,7 +10,7 @@ local modem = component.modem
 ---------------------------------------------------------------------------------------------------
 local resouces = filesystem.path(system.getCurrentScript())
 local tempPath = system.getTemporaryPath()
-local version = 1.3
+local version = 1.2
 local prices = {}
 
 local logoImage = image.load(resouces .. "Logo.pic")
@@ -258,7 +258,7 @@ if filesystem.exists(tempPath .. "/Version.cfg") then
     )
     system.execute(tempPath .. "/CassUpdater.lua")
     
-    workspace:stop()
+    window:remove()
   end
 else
   internet.download(
@@ -276,7 +276,7 @@ else
     )
     system.execute(tempPath .. "/CassUpdater.lua")
 
-    workspace:stop()
+    window:remove()
   end
 end
 ---------------------------------------------------------------------------------------------------
