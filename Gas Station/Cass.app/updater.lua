@@ -6,9 +6,13 @@ local fs = require("Filesystem")
 event.sleep(3)
 
 fs.remove("/Applications/Cass.app/Main.lua")
+print("Deleted Main.lua")
 fs.remove("/Applications/Cass.app/Icon.pic")
+print("Deleted Icon.pic")
 fs.remove("/Applications/Cass.app/Logo.pic")
+print("Deleted Logo.pic")
 fs.remove("/Applications/Cass.app/Config.cfg")
+print("Deleted Config.cfg")
 
 print("Creating a folder")
 fs.makeDirectory("/Applications/Cass.app")
