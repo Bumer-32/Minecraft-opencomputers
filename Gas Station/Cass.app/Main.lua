@@ -9,6 +9,7 @@ local image = require("Image")
 local modem = component.modem
 ---------------------------------------------------------------------------------------------------
 local resouces = filesystem.path(system.getCurrentScript())
+local tempPath = system.getTemporaryPath()
 local version = 1.2
 local prices = {}
 
@@ -240,44 +241,42 @@ pay.onTouch = function()
   end
 end
 
-if filesystem.exists(system.getTemporaryPath() .. "/Version.cfg") then
-  filesystem.remove(system.getTemporaryPath() .. "/Version.cfg")
+if filesystem.exists(tempPath .. "/Version.cfg") then
+  filesystem.remove(tempPath .. "/Version.cfg")
   internet.download(
     "https://raw.githubusercontent.com/Bumer-32/Minecraft-opencomputers/main/Gas%20Station/Cass.app/Version.cfg",
-    system.getTemporaryPath() .. "/Version.cfg"
+    tempPath .. "/Version.cfg"
   )
-  if not filesystem.read(system.getTemporaryPath() .. "/Version.cfg") == version then
+  if filesystem.read(tempPath .. "/Version.cfg") == version then else
     gui.alert("Программа була оновлена і вона буде перезавантажена в цілях оновлення")
     event.sleep(2)
   
 
     internet.download(
     "https://raw.githubusercontent.com/Bumer-32/Minecraft-opencomputers/main/Gas%20Station/Cass.app/updater.lua",
-    system.getTemporaryPath() .. "/CassUpdater.lua"
+    tempPath .. "/CassUpdater.lua"
     )
-    system.execute(system.getTemporaryPath() .. "/CassUpdater.lua")
+    system.execute(tempPath .. "/CassUpdater.lua")
 
     window:remove()
-    workspace:stop()
   end
 else
   internet.download(
     "https://raw.githubusercontent.com/Bumer-32/Minecraft-opencomputers/main/Gas%20Station/Cass.app/Version.cfg",
-    system.getTemporaryPath() .. "/Version.cfg"
+    tempPath .. "/Version.cfg"
   )
-  if not filesystem.read(system.getTemporaryPath() .. "/Version.cfg") == version then
+  if filesystem.read(tempPath .. "/Version.cfg") == version then else
     gui.alert("Программа була оновлена і вона буде перезавантажена в цілях оновлення")
     event.sleep(2)
   
-
+    
     internet.download(
     "https://raw.githubusercontent.com/Bumer-32/Minecraft-opencomputers/main/Gas%20Station/Cass.app/updater.lua",
-    system.getTemporaryPath() .. "/CassUpdater.lua"
+    tempPath .. "/CassUpdater.lua"
     )
-    system.execute(system.getTemporaryPath() .. "/CassUpdater.lua")
+    system.execute(tempPath .. "/CassUpdater.lua")
 
     window:remove()
-    workspace:stop()
   end
 end
 ---------------------------------------------------------------------------------------------------
