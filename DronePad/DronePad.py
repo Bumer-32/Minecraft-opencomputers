@@ -156,26 +156,26 @@ class XboxController(object):
           print("Выход")
           time.sleep(0.5)
         
-#         elif Forward == 1 :
-#           send(Stem, "forward")
-#           print("Выбранная сторона - вперёд")
-#           time.sleep(0.5)
+        elif Forward == 1 :
+          send(Stem, "forward")
+          print("Выбранная сторона - вперёд")
+          time.sleep(0.5)
 
-#         elif Right == 1 :
-#           send(Stem, "Right")
-#           print("Выбранная сторона - вправо")
-#           time.sleep(0.5)
+        elif Right == 1 :
+          send(Stem, "Right")
+          print("Выбранная сторона - вправо")
+          time.sleep(0.5)
         
-#         elif Back == 1 :
-#           send(Stem, "Back")
-#           print("Выбранная сторона - назад")
-#           time.sleep(0.5)
+        elif Back == 1 :
+          send(Stem, "Back")
+          print("Выбранная сторона - назад")
+          time.sleep(0.5)
 
-#         elif Left == 1 :
-#           send(Stem, "Left")
-#           print("Выбранная сторона - влево")
-#           time.sleep(0.5)
-# емать я тут лох конещ   ЦЫФРЫ ПОСТАВИТЬ НОРМ НЕ МОГ??? лан пофиг потом исправлю
+        elif Left == 1 :
+          send(Stem, "Left")
+          print("Выбранная сторона - влево")
+          time.sleep(0.5)
+
         
     def _monitor_controller(self):
         while True:
