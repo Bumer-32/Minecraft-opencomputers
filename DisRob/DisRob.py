@@ -81,6 +81,7 @@ class MyClient(discord.Client):
       await message.channel.send('Drop')
       print("Drop")
       send(Stem, 't')
-
-client = MyClient()
+      
+intents = discord.Intents(guilds=True, messages=True)
+client = MyClient(intents=intents)
 client.run(Token)
