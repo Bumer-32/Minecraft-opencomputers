@@ -2,4 +2,4 @@
 My programs for opencomputers
 
 :)
-POVERED BY BRATSTVO YES
+POVERED BY YES
